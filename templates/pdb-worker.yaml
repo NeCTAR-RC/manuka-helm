@@ -1,0 +1,14 @@
+{{- if .Values.worker.pdb.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "manuka.fullname" . }}-worker
+  labels:
+    {{- include "manuka.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.worker.pdb.minAvailable | default 0 }}
+  selector:
+    matchLabels:
+      {{- include "manuka.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: worker
+{{- end }}

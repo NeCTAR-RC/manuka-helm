@@ -1,0 +1,44 @@
+{{- if .Values.tuakiri.domain_id }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "manuka.fullname" . }}-tuakiri-mappings
+  labels:
+    {{- include "manuka.labels" . | nindent 4 }}
+spec:
+  schedule: "0 1 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      ttlSecondsAfterFinished: 300
+      template:
+        metadata:
+          annotations:
+            {{- include "manuka.vaultAnnotations" . | nindent 12 }}
+          labels:
+            {{- include "manuka.selectorLabels" . | nindent 12 }}
+        spec:
+          restartPolicy: OnFailure
+          serviceAccountName: {{ include "manuka.serviceAccountName" . }}
+          containers:
+          - name: {{ .Chart.Name }}
+            securityContext:
+              {{- toYaml .Values.securityContext | nindent 14 }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command:
+              - 'sh'
+              - '/etc/manuka-bin/add-tuakiri-mappings.sh'
+            volumeMounts:
+              - name: {{ include "manuka.fullname" . }}
+                mountPath: "/etc/manuka/"
+              - name: {{ include "manuka.fullname" . }}-tuakiri-mappings
+                mountPath: "/etc/manuka-bin/"
+          volumes:
+          - name: {{ include "manuka.fullname" . }}
+            configMap:
+              name: {{ include "manuka.fullname" . }}
+          - name: {{ include "manuka.fullname" . }}-tuakiri-mappings
+            configMap:
+              name: {{ include "manuka.fullname" . }}-tuakiri-mappings
+{{- end }}

@@ -1,0 +1,12 @@
+{{- if .Values.tuakiri.domain_id }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "manuka.fullname" . }}-tuakiri-mappings
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "2"
+data:
+  add-tuakiri-mappings.sh: |
+{{ include "add_mappings_sh" . | indent 4 }}
+{{- end }}

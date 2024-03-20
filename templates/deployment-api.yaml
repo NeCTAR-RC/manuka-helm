@@ -1,0 +1,124 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "manuka.fullname" . }}-api
+  labels:
+    {{- include "manuka.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+spec:
+  replicas: {{ .Values.api.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "manuka.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: api
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config-map.yaml") . | sha256sum }}
+        checksum/config-apache: {{ include (print $.Template.BasePath "/config-map-apache.yaml") . | sha256sum }}
+        checksum/config-shibd: {{ include (print $.Template.BasePath "/config-map-shibd.yaml") . | sha256sum }}
+        {{- include "manuka.vaultAnnotations" . | nindent 8 }}
+      labels:
+        {{- include "manuka.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: api
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "manuka.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: {{ include "manuka.fullname" . }}
+              mountPath: "/etc/manuka/"
+            - name: {{ include "manuka.fullname" . }}-apache-root
+              mountPath: "/var/lib/manuka/"
+            - name: {{ include "manuka.fullname" . }}-apache
+              mountPath: "/etc/apache2/sites-enabled/"
+            - name: {{ include "manuka.fullname" . }}-shibd-sock
+              mountPath: "/var/run/shibboleth/"
+            - name: {{ include "manuka.fullname" . }}-shibd
+              mountPath: "/etc/shibboleth/shibboleth2.xml"
+              subPath: shibboleth2.xml
+          livenessProbe:
+            httpGet:
+              path: /healthcheck
+              port: http
+              scheme: HTTP
+              httpHeaders:
+              - name: Host
+                value: 127.0.0.1
+            timeoutSeconds: 3
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          startupProbe:
+            httpGet:
+              path: /healthcheck
+              port: http
+              scheme: HTTP
+              httpHeaders:
+              - name: Host
+                value: 127.0.0.1
+            initialDelaySeconds: 5
+            timeoutSeconds: 3
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          resources:
+            {{- toYaml .Values.api.resources | nindent 12 }}
+        - name: shibd
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.shibd.image.repository }}:{{ .Values.shibd.image.tag }}"
+          imagePullPolicy: {{ .Values.shibd.image.pullPolicy }}
+          volumeMounts:
+            - name: {{ include "manuka.fullname" . }}-shibd
+              mountPath: "/etc/shibboleth/shibboleth2.xml"
+              subPath: shibboleth2.xml
+            - name: {{ include "manuka.fullname" . }}-shibd-sock
+              mountPath: "/var/run/shibboleth/"
+          resources:
+            {{- toYaml .Values.shibd.resources | nindent 12 }}
+      volumes:
+        - name: {{ include "manuka.fullname" . }}-shibd-sock
+          emptyDir: {}
+        - name: {{ include "manuka.fullname" . }}
+          configMap:
+            name: {{ include "manuka.fullname" . }}
+        - name: {{ include "manuka.fullname" . }}-shibd
+          configMap:
+            name: {{ include "manuka.fullname" . }}-shibd
+        - name: {{ include "manuka.fullname" . }}-apache
+          configMap:
+            name: {{ include "manuka.fullname" . }}-apache
+        - name: {{ include "manuka.fullname" . }}-apache-root
+          configMap:
+            name: {{ include "manuka.fullname" . }}-apache-root
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.api.affinity }}
+      affinity: {{- include "common.tplvalues.render" (dict "value" .Values.api.affinity "context" $) | nindent 8 }}
+      {{- else }}
+      affinity:
+        podAffinity: {{- include "common.affinities.pods" (dict "type" .Values.api.podAffinityPreset "component" "api" "context" $) | nindent 10 }}
+        podAntiAffinity: {{- include "common.affinities.pods" (dict "type" .Values.api.podAntiAffinityPreset "component" "api" "context" $) | nindent 10 }}
+        nodeAffinity: {{- include "common.affinities.nodes" (dict "type" .Values.api.nodeAffinityPreset.type "key" .Values.api.nodeAffinityPreset.key "values" .Values.api.nodeAffinityPreset.values) | nindent 10 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
