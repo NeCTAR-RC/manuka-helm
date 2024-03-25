@@ -2,8 +2,8 @@ apiVersion: v2
 name: manuka
 description: A Helm chart for manuka
 type: application
-version: 0.9.0
-appVersion: 2.0.0-12-g8812a2d
+version: 0.9.1
+appVersion: 2.0.0-13-gc2e57b7
 dependencies:
 - name: common
   repository: https://charts.bitnami.com/bitnami
@@ -11,5 +11,5 @@ dependencies:
   - bitnami-common
   version: 2.x.x
 - name: shibd
-  repository: "oci://registry.rc.nectar.org.au/nectar-helm"
+  repository: oci://registry.rc.nectar.org.au/nectar-helm
   version: 1.x.x
