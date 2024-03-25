@@ -8,6 +8,7 @@ conf:
   support_url:
   default_target:
   whitelist:
+  fake_shib: false
   smtp:
     from_email:
   keystone:

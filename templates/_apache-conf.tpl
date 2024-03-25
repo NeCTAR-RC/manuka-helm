@@ -1,4 +1,5 @@
 {{- define "apache-conf" }}
+{{- if not .Values.conf.fake_shib }}
 <Location /Shibboleth.sso>
     SetHandler shib-handler
     Satisfy Any
@@ -12,7 +13,7 @@
         require valid-user
     </Location>
 </IfModule>
-
+{{- end }}
 
 <VirtualHost *:80>
   ServerName {{ .Values.apache.server_name }}

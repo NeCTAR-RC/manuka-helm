@@ -4,6 +4,9 @@ terms_version={{ .Values.conf.terms_version }}
 support_url={{ .Values.conf.support_url }}
 default_target={{ .Values.conf.default_target }}
 whitelist={{ join "," .Values.conf.whitelist }}
+{{- if .Values.conf.fake_shib }}
+fake_shib=True
+{{- end }}
 
 [keystone]
 auth_url={{ .Values.conf.keystone.auth_url }}v3/
