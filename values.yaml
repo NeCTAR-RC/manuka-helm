@@ -138,3 +138,8 @@ ingress:
 nodeSelector: {}
 
 tolerations: []
+
+components:
+  mariadb: false
+  rabbitmq: false
+  memcached: false
