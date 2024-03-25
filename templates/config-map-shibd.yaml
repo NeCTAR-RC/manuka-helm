@@ -1,3 +1,4 @@
+{{- if not .Values.conf.fake_shib }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -8,3 +9,4 @@ metadata:
 data:
   shibboleth2.xml: |
 {{ include "shibboleth2-conf" . | indent 4 }}
+{{- end }}
