@@ -9,6 +9,9 @@ conf:
   default_target:
   whitelist:
   fake_shib: false
+  transport_url:
+  database:
+    connection:
   smtp:
     from_email:
   keystone:

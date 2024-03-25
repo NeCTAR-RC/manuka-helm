@@ -83,10 +83,14 @@ vault.hashicorp.com/secret-volume-path-secrets.conf: /etc/manuka/manuka.conf.d
 vault.hashicorp.com/agent-inject-secret-secrets.conf: "{{ .Values.vault.settings_secret }}"
 vault.hashicorp.com/agent-inject-template-secrets.conf: |
   {{ print "{{- with secret \"" .Values.vault.settings_secret "\" -}}" }}
+{{- if not .Values.conf.transport_url }}
   {{ print "[DEFAULT]" }}
   {{ print "transport_url={{ .Data.data.transport_url }}" }}
+{{- end }}
+{{- if not .Values.conf.database.connection }}
   {{ print "[database]" }}
   {{ print "connection={{ .Data.data.database_connection }}" }}
+{{- end }}
   {{ print "[flask]" }}
   {{ print "secret_key={{ .Data.data.flask_secret_key }}" }}
   {{ print "[orcid]" }}

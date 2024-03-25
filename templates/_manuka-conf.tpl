@@ -7,6 +7,14 @@ whitelist={{ join "," .Values.conf.whitelist }}
 {{- if .Values.conf.fake_shib }}
 fake_shib=True
 {{- end }}
+{{- if .Values.conf.transport_url }}
+transport_url={{ .Values.conf.transport_url }}
+{{- end }}
+
+{{- if .Values.conf.database.connection }}
+[database]
+connection={{ .Values.conf.database.connection }}
+{{- end }}
 
 [keystone]
 auth_url={{ .Values.conf.keystone.auth_url }}v3/
