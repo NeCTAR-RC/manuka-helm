@@ -16,7 +16,9 @@
 {{- end }}
 
 <VirtualHost *:80>
-  ServerName {{ .Values.apache.server_name }}
+  {{- if .Values.apache.servername }}
+  ServerName {{ .Values.apache.servername }}
+  {{- end }}
 
   DocumentRoot "/var/lib/manuka/"
 

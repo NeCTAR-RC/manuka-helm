@@ -87,7 +87,7 @@ tuakiri:
   metadata_url:
 
 apache:
-  servername: localhost
+  servername:
 
 
 imagePullSecrets: []
