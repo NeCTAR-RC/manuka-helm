@@ -35,7 +35,9 @@ from_email={{ .Values.conf.smtp.from_email }}
 
 [oslo_messaging_rabbit]
 amqp_durable_queues=True
+{{- if .Values.conf.oslo_messaging_rabbit.ssl }}
 ssl=True
+{{- end }}
 
 [oslo_policy]
 policy_file=/etc/manuka/policy.yaml

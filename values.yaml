@@ -21,6 +21,8 @@ conf:
     memcached_servers: []
   freshdesk:
     domain:
+  oslo_messaging_rabbit:
+    ssl: true
 
 
 vault:
