@@ -69,6 +69,7 @@ vault.hashicorp.com/role: "{{ .Values.vault.role }}"
 vault.hashicorp.com/agent-inject: "true"
 vault.hashicorp.com/agent-pre-populate-only: "true"
 vault.hashicorp.com/agent-inject-status: "update"
+{{- if not .Values.conf.fake_shib }}
 vault.hashicorp.com/agent-inject-secret-backendcert.pem: "{{ .Values.vault.shibcert }}"
 vault.hashicorp.com/agent-inject-template-backendcert.pem: |
   {{ print "{{- with secret \"" .Values.vault.shibcert "\" -}}" }}
@@ -79,6 +80,7 @@ vault.hashicorp.com/agent-inject-template-backendkey.pem: |
   {{ print "{{- with secret \"" .Values.vault.shibcert "\" -}}" }}
   {{ print "{{ .Data.data.key }}" }}
   {{ print "{{- end -}}" }}
+{{- end }}
 vault.hashicorp.com/secret-volume-path-secrets.conf: /etc/manuka/manuka.conf.d
 vault.hashicorp.com/agent-inject-secret-secrets.conf: "{{ .Values.vault.settings_secret }}"
 vault.hashicorp.com/agent-inject-template-secrets.conf: |
