@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "manuka.fullname" . }}-db-sync
+  labels:
+    {{- include "manuka.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-weight": "3"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/config-map.yaml") . | sha256sum }}
+        {{- include "manuka.vaultAnnotations" . | nindent 8 }}
+      labels:
+        {{- include "manuka.selectorLabels" . | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "manuka.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - manuka-manage
+            - db
+            - upgrade
+          volumeMounts:
+            - name: {{ include "manuka.fullname" . }}
+              mountPath: "/etc/manuka/"
+      volumes:
+        - name: {{ include "manuka.fullname" . }}
+          configMap:
+            name: {{ include "manuka.fullname" . }}
