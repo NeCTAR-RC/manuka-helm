@@ -2,7 +2,7 @@ apiVersion: v2
 name: manuka
 description: A Helm chart for manuka
 type: application
-version: 1.0.11
+version: 1.0.12
 appVersion: 2.0.0-14-gab9039b
 dependencies:
 - name: common

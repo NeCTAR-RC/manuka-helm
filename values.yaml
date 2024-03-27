@@ -76,6 +76,11 @@ image:
   tag: ""
 
 
+wait_for:
+  db:
+    host:
+    port: 3306
+
 shibd:
   image:
     repository: registry.rc.nectar.org.au/nectar/shibd

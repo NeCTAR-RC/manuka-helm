@@ -19,6 +19,18 @@ spec:
     spec:
       restartPolicy: Never
       serviceAccountName: {{ include "manuka.serviceAccountName" . }}
+{{- if .Values.wait_for.db.host }}
+      initContainers:
+        - name: wait-for-mariadb
+          image: cgr.dev/chainguard/wait-for-it:latest
+          args:
+            - '-h'
+            - '{{ .Values.wait_for.db.host }}'
+            - '-p'
+            - '{{ .Values.wait_for.db.port }}'
+            - '-t'
+            - '120'
+{{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
