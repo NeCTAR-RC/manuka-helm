@@ -2,8 +2,8 @@ apiVersion: v2
 name: manuka
 description: A Helm chart for manuka
 type: application
-version: 1.0.13
-appVersion: 2.0.0-15-g9f35e6e
+version: 1.0.14
+appVersion: 2.0.0-19-g1384757
 dependencies:
 - name: common
   repository: https://charts.bitnami.com/bitnami
