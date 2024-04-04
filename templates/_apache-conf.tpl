@@ -38,7 +38,7 @@
   Alias /robots.txt "/var/lib/manuka/robots.txt"
 
   CustomLog /dev/stdout combined
-  ErrorLog /dev/stderr
+  ErrorLog /dev/stdout
 
   ServerSignature Off
   SetEnvIf X-Forwarded-Proto https HTTPS=1
