@@ -4,6 +4,8 @@ description: A Helm chart for manuka
 type: application
 version: 2.2.2
 appVersion: 3.0.0-6-ga0aeff5
+sources:
+  - https://github.com/NeCTAR-RC/manuka-helm.git
 dependencies:
 - name: common
   repository: https://charts.bitnami.com/bitnami
