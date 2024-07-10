@@ -2,7 +2,7 @@ apiVersion: v2
 name: manuka
 description: A Helm chart for manuka
 type: application
-version: 2.7.0
+version: 2.8.0
 appVersion: 3.0.0-8-g3aeed8e
 sources:
 - https://github.com/NeCTAR-RC/manuka-helm.git
@@ -18,7 +18,7 @@ dependencies:
   repository: oci://registry-1.docker.io/bitnamicharts
   condition: components.mariadb
 - name: rabbitmq
-  version: 14.4.4
+  version: 14.5.0
   repository: oci://registry-1.docker.io/bitnamicharts
   condition: components.rabbitmq
 - name: memcached
