@@ -10,6 +10,7 @@ conf:
   whitelist:
   fake_shib: false
   transport_url:
+  notifier:
   database:
     connection:
   smtp:
@@ -23,7 +24,6 @@ conf:
     domain:
   oslo_messaging_rabbit:
     ssl: true
-
 
 vault:
   role: k8s

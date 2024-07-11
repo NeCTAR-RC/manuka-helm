@@ -10,6 +10,9 @@ fake_shib=True
 {{- if .Values.conf.transport_url }}
 transport_url={{ .Values.conf.transport_url }}
 {{- end }}
+{{- if .Values.conf.notifier }}
+notifier={{ .Values.conf.notifier }}
+{{- end }}
 
 {{- if .Values.conf.database.connection }}
 [database]
