@@ -2,8 +2,8 @@ apiVersion: v2
 name: manuka
 description: A Helm chart for manuka
 type: application
-version: 2.23.10
-appVersion: 3.0.0-13-g89d0e86
+version: 2.23.11
+appVersion: 3.0.0-14-g122cb91
 sources:
 - https://github.com/NeCTAR-RC/manuka-helm.git
 dependencies:
