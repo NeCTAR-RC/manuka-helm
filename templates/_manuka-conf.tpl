@@ -37,10 +37,13 @@ default_quota_gb=10
 from_email={{ .Values.conf.smtp.from_email }}
 
 [oslo_messaging_rabbit]
-amqp_durable_queues=True
 {{- if .Values.conf.oslo_messaging_rabbit.ssl }}
 ssl=True
 {{- end }}
+rabbit_quorum_queue=true
+rabbit_transient_quorum_queue=true
+rabbit_stream_fanout=true
+rabbit_qos_prefetch_count=1
 
 [oslo_policy]
 policy_file=/etc/manuka/policy.yaml
