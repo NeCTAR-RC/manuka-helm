@@ -24,6 +24,8 @@ conf:
     domain:
   oslo_messaging_rabbit:
     ssl: true
+  orcid:
+    sandbox: false
 
 vault:
   role: k8s

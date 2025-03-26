@@ -64,4 +64,7 @@ memcached_servers={{ join "," .Values.conf.keystone.memcached_servers }}
 [freshdesk]
 domain={{ .Values.conf.freshdesk.domain }}
 
+[orcid]
+sandbox={{ .Values.conf.orcid.sandbox }}
+
 {{- end }}
