@@ -10,9 +10,9 @@ dependencies:
   version: 20.4.2
 - name: rabbitmq
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 15.4.0
+  version: 15.4.1
 - name: memcached
   repository: oci://registry-1.docker.io/bitnamicharts
   version: 7.7.1
-digest: sha256:87c2b60c16f46c1c5a0cfa0fd865e5a9d699479d9fc038bcb55f20f088f28e8a
-generated: "2025-03-26T14:36:20.306695161+11:00"
+digest: sha256:247f78962bde83b7c281fa2b3d35c7c33ef998ec2b17c782bca808bfbed5fec7
+generated: "2025-03-31T02:40:17.267905799Z"
