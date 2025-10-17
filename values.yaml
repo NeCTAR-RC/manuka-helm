@@ -26,6 +26,7 @@ conf:
     ssl: true
   orcid:
     sandbox: false
+    default_redirect_url:
 
 vault:
   role: k8s

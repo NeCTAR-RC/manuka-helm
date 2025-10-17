@@ -66,5 +66,5 @@ domain={{ .Values.conf.freshdesk.domain }}
 
 [orcid]
 sandbox={{ .Values.conf.orcid.sandbox }}
-
+default_redirect_url={{ .Values.conf.orcid.default_redirect_url }}
 {{- end }}
