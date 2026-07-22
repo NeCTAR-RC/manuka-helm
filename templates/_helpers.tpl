@@ -106,5 +106,9 @@ vault.hashicorp.com/agent-inject-template-secrets.conf: |
   {{ print "password={{ .Data.data.keystone_password }}" }}
   {{ print "[freshdesk]" }}
   {{ print "key={{ .Data.data.freshdesk_key }}" }}
+  {{ print "{{- if .Data.data.sentry_dsn }}" }}
+  {{ print "[sentry]" }}
+  {{ print "dsn={{ .Data.data.sentry_dsn }}" }}
+  {{ print "{{- end }}" }}
   {{ print "{{- end -}}" }}
 {{- end }}

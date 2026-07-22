@@ -19,6 +19,9 @@ notifier={{ .Values.conf.notifier }}
 connection={{ .Values.conf.database.connection }}
 {{- end }}
 
+[sentry]
+environment={{ .Values.conf.sentry.environment }}
+
 [keystone]
 auth_url={{ .Values.conf.keystone.auth_url }}v3/
 

@@ -27,6 +27,8 @@ conf:
   orcid:
     sandbox: false
     default_redirect_url:
+  sentry:
+    environment: production
 
 vault:
   role: k8s
