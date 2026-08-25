@@ -1,4 +1,5 @@
 {{- define "apache-conf" }}
+ServerTokens Prod
 {{- if not .Values.conf.fake_shib }}
 <Location /Shibboleth.sso>
     SetHandler shib-handler
