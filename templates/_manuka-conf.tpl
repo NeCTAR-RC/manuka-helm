@@ -54,6 +54,9 @@ driver = messagingv2
 [oslo_policy]
 policy_file=/etc/manuka/policy.yaml
 
+[oslo_middleware]
+enable_proxy_headers_parsing={{ .Values.conf.oslo_middleware.enable_proxy_headers_parsing }}
+
 [keystone_authtoken]
 auth_url={{ .Values.conf.keystone.auth_url }}
 www_authenticate_uri={{ .Values.conf.keystone.auth_url }}

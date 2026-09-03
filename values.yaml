@@ -24,6 +24,11 @@ conf:
     domain:
   oslo_messaging_rabbit:
     ssl: true
+  oslo_middleware:
+    # manuka always runs behind the ingress/load balancer in this chart,
+    # so proxy headers (X-Forwarded-For, X-Forwarded-Proto, etc) can be
+    # trusted to determine the real client IP and scheme.
+    enable_proxy_headers_parsing: true
   orcid:
     sandbox: false
     default_redirect_url:
