@@ -72,6 +72,25 @@ worker:
     values: []
   affinity: {}
   resources: {}
+  # Probe the worker's own RPC server via oslo.messaging's built-in
+  # ping endpoint (rpc_ping_enabled=true is set in manuka.conf). The
+  # probe targets the per-host queue manuka-worker.<pod hostname>, so
+  # it proves this pod's worker is consuming and dispatching messages,
+  # catching a cotyledon service manager that is running but spawned
+  # no workers. Startup-only on purpose: a liveness probe on the
+  # message bus would mass-restart every worker during a RabbitMQ
+  # outage that oslo.messaging would ride out by reconnecting;
+  # post-start wedges are left to queue/consumer alerting.
+  startupProbe:
+    exec:
+      command:
+        - nectar-health-probe
+        - "--project"
+        - manuka
+        - rpc-ping
+    periodSeconds: 10
+    timeoutSeconds: 10
+    failureThreshold: 30
     # limits:
     #   cpu: 100m
     #   memory: 128Mi

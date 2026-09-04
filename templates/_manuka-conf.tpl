@@ -1,5 +1,11 @@
 {{- define "manuka-conf" }}
 [DEFAULT]
+# Expose oslo.messaging's RPC server ping endpoint so the worker
+# startup probe (nectar-health-probe rpc-ping) can call it.
+rpc_ping_enabled=true
+# Same value manuka sets in code; stated here so external tools such
+# as nectar-health-probe see the right exchange from config alone.
+control_exchange=manuka
 terms_version={{ .Values.conf.terms_version }}
 support_url={{ .Values.conf.support_url }}
 default_target={{ .Values.conf.default_target }}
