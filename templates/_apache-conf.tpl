@@ -13,6 +13,13 @@ ServerTokens Prod
         ShibRequireSession On
         require valid-user
     </Location>
+    {{- if .Values.apache.link_force_authn }}
+    # Linking an OpenID Connect login to an existing account must not
+    # ride on a Shibboleth session somebody else left in the browser.
+    <Location /login/link >
+        ShibRequestSetting forceAuthn true
+    </Location>
+    {{- end }}
 </IfModule>
 {{- end }}
 

@@ -110,5 +110,9 @@ vault.hashicorp.com/agent-inject-template-secrets.conf: |
   {{ print "[sentry]" }}
   {{ print "dsn={{ .Data.data.sentry_dsn }}" }}
   {{ print "{{- end }}" }}
+  {{ print "{{- if .Data.data.oidc_client_secret }}" }}
+  {{ print "[oidc]" }}
+  {{ print "client_secret={{ .Data.data.oidc_client_secret }}" }}
+  {{ print "{{- end }}" }}
   {{ print "{{- end -}}" }}
 {{- end }}

@@ -28,6 +28,34 @@ connection={{ .Values.conf.database.connection }}
 [sentry]
 environment={{ .Values.conf.sentry.environment }}
 
+[flask]
+session_cookie_secure={{ .Values.conf.flask.session_cookie_secure }}
+
+[oidc]
+enabled={{ .Values.conf.oidc.enabled }}
+{{- if .Values.conf.oidc.issuer }}
+issuer={{ .Values.conf.oidc.issuer }}
+{{- end }}
+client_id={{ .Values.conf.oidc.client_id }}
+{{- if .Values.conf.oidc.redirect_url }}
+redirect_url={{ .Values.conf.oidc.redirect_url }}
+{{- end }}
+{{- if .Values.conf.oidc.scopes }}
+scopes={{ join "," .Values.conf.oidc.scopes }}
+{{- end }}
+use_userinfo_endpoint={{ .Values.conf.oidc.use_userinfo_endpoint }}
+session_timeout={{ .Values.conf.oidc.session_timeout }}
+link_timeout={{ .Values.conf.oidc.link_timeout }}
+eppn_autolink_max_age_days={{ .Values.conf.oidc.eppn_autolink_max_age_days }}
+deny_on_identity_drift={{ .Values.conf.oidc.deny_on_identity_drift }}
+prompt_saml_users={{ .Values.conf.oidc.prompt_saml_users }}
+{{- if .Values.conf.oidc.post_logout_redirect_url }}
+post_logout_redirect_url={{ .Values.conf.oidc.post_logout_redirect_url }}
+{{- end }}
+{{- if .Values.conf.oidc.fake }}
+fake=True
+{{- end }}
+
 [keystone]
 auth_url={{ .Values.conf.keystone.auth_url }}v3/
 

@@ -34,6 +34,32 @@ conf:
     default_redirect_url:
   sentry:
     environment: production
+  flask:
+    # Only send the session cookie over HTTPS. Turn off for a plain
+    # HTTP development deployment.
+    session_cookie_secure: true
+  oidc:
+    # Login through the OpenID Connect provider (Keycloak). The client
+    # secret is read from Vault as oidc_client_secret. Empty values
+    # fall back to the manuka defaults.
+    enabled: false
+    issuer:
+    client_id: manuka
+    # The callback URL registered with the provider, normally
+    # https://<host>/oidc/callback.
+    redirect_url:
+    scopes: []
+    use_userinfo_endpoint: false
+    session_timeout: 3600
+    link_timeout: 600
+    eppn_autolink_max_age_days: 180
+    deny_on_identity_drift: false
+    # Offer users who log in through Shibboleth to set up the new
+    # login. Turn on once the dashboard sends users to /oidc/login/.
+    prompt_saml_users: false
+    post_logout_redirect_url:
+    # Replace the provider with a local form, for development only.
+    fake: false
 
 vault:
   role: k8s
@@ -121,9 +147,16 @@ shibd:
 tuakiri:
   domain_id:
   metadata_url:
+  # The alias of the Tuakiri identity provider in Keycloak. OpenID
+  # Connect logins carry this instead of an IdP entityID, so one
+  # mapping row for it sends every Tuakiri user to domain_id.
+  keycloak_alias: tuakiri
 
 apache:
   servername:
+  # Require a fresh institutional login, rather than an existing
+  # Shibboleth session, to link an OpenID Connect login to an account.
+  link_force_authn: true
 
 
 imagePullSecrets: []
