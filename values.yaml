@@ -146,10 +146,13 @@ shibd:
 
 tuakiri:
   domain_id:
+  # SAML logins are mapped to domain_id by IdP entityID. A CronJob
+  # loads the entityIDs from this metadata daily; it is only needed
+  # while Shibboleth login is enabled.
   metadata_url:
   # The alias of the Tuakiri identity provider in Keycloak. OpenID
-  # Connect logins carry this instead of an IdP entityID, so one
-  # mapping row for it sends every Tuakiri user to domain_id.
+  # Connect logins brokered by it are mapped to domain_id through
+  # [oidc] federation_domains.
   keycloak_alias: tuakiri
 
 apache:

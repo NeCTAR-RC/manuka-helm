@@ -49,6 +49,9 @@ link_timeout={{ .Values.conf.oidc.link_timeout }}
 eppn_autolink_max_age_days={{ .Values.conf.oidc.eppn_autolink_max_age_days }}
 deny_on_identity_drift={{ .Values.conf.oidc.deny_on_identity_drift }}
 prompt_saml_users={{ .Values.conf.oidc.prompt_saml_users }}
+{{- if and .Values.tuakiri.domain_id .Values.tuakiri.keycloak_alias }}
+federation_domains={{ .Values.tuakiri.keycloak_alias }}:{{ .Values.tuakiri.domain_id }}
+{{- end }}
 {{- if .Values.conf.oidc.post_logout_redirect_url }}
 post_logout_redirect_url={{ .Values.conf.oidc.post_logout_redirect_url }}
 {{- end }}
